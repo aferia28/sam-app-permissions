@@ -4,6 +4,8 @@
 const tableName = process.env.SAMPLE_TABLE;
 
 // Create a DocumentClient that represents the query to add an item
+import { DynamoDBClient, ResourceNotFoundException } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const docClient = new dynamodb.DocumentClient();
 
@@ -37,7 +39,7 @@ exports.getAllItemsHandler = async (event) => {
     } catch (ResourceNotFoundException) {
         response = {
             statusCode: 404,
-            body: "Unable to call DynamoDB. Table resource not found."
+            body: "Unable to call DynamoDB. Table resource not found." + ResourceNotFoundException
         };
     }
 
